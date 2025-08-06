@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mapa con Ruta GPX - Bogotá</title>
+
+  <!-- Leaflet CSS -->
+  <link 
+    rel="stylesheet" 
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    crossorigin="anonymous"
+  />
+
+  <!-- Estilos personalizados -->
+  <link rel="stylesheet" href="estilos.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📍</text></svg>">
+
+  <!-- Leaflet JS -->
+  <script 
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    crossorigin="anonymous"
+    defer
+  ></script>
+
+  <!-- Librería leaflet-gpx -->
+  <script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.5.1/gpx.min.js"
+    defer
+  ></script>
+
+  <!-- Tu script personalizado -->
+  <script src="programa.js" defer></script>
+</head>
+<body>
+  <div id="titulo">
+    <h1>📍 Ruta GPX Automática - Bogotá</h1>
+  </div>
+
+  <div id="map"></div>
+</body>
+</html>
