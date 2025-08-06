@@ -1,93 +1,48 @@
-// Inicializar el mapa en Bogotá (Plaza de Bolívar)
-const map = L.map('map').setView([4.60971, -74.08175], 15);
+const map = L.map("map").setView([4.627858333, -74.06611111], 17);
 
-// Capa base de OpenStreetMap
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+// Capa base
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
+  attribution: "© OpenStreetMap"
 }).addTo(map);
 
-// Marcador de referencia en la Plaza de Bolívar
-L.marker([4.60971, -74.08175])
-  .addTo(map)
-  .bindPopup("<b>Plaza de Bolívar</b><br>Punto de referencia.")
-  .openPopup();
-
-// Definir iconos personalizados para GPX (usando iconos Leaflet predeterminados)
-const startIcon = L.icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
+// Icono personalizado para las imágenes (mantener como antes)
+const fotoIcon = L.icon({
+  iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png", // O el ícono que usabas
+  iconSize: [32, 37],
+  iconAnchor: [16, 37],
+  popupAnchor: [0, -28]
 });
 
-const endIcon = L.icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-red.png', // Icono rojo para final
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
+// Cargar archivo GPX y cambiar solo los íconos de inicio y fin
+new L.GPX("ruta.gpx", {
+  async: true,
+  marker_options: {
+    startIconUrl: "pin.png",
+    endIconUrl: "pin.png",
+    shadowUrl: null
+  }
+}).on("loaded", function (e) {
+  map.fitBounds(e.target.getBounds());
+}).addTo(map);
 
-// Cargar el archivo GPX y dibujar la ruta con iconos personalizados
-fetch('ruta.gpx')
-  .then(response => {
-    if (!response.ok) throw new Error('No se pudo cargar el archivo GPX: ' + response.status);
-    return response.text();
-  })
-  .then(gpxContent => {
-    const gpxLayer = new L.GPX(gpxContent, {
-      async: true,
-      color: '#E91E63', // Rosa brillante
-      weight: 6,
-      opacity: 0.9,
-      markerOptions: {
-        startIcon: startIcon,
-        endIcon: endIcon,
-        shadow: true
-      }
-    }).addTo(map);
-
-    gpxLayer.on('loaded', function (e) {
-      const gpx = e.target;
-
-      console.log('Ruta cargada:', {
-        Nombre: gpx.get_name() || 'Sin nombre',
-        Distancia: (gpx.get_distance() / 1000).toFixed(2) + ' km',
-        Duración: gpx.get_duration_string(),
-      });
-
-      map.fitBounds(gpx.getBounds(), { padding: [50, 50] });
-    });
-  })
-  .catch(error => {
-    console.error('Error al cargar el archivo GPX:', error);
-    alert('No se pudo cargar la ruta GPX. Verifica que el archivo "ruta.gpx" esté en la misma carpeta.');
-  });
-
-// Puntos de interés con imágenes: img_1.jpg a img_10.jpg
-const puntosDeInteres = [
-  { lat: 4.6101, lon: -74.0818, img: 'img_1.jpg', titulo: 'Punto 1' },
-  { lat: 4.6105, lon: -74.0820, img: 'img_2.jpg', titulo: 'Punto 2' },
-  { lat: 4.6110, lon: -74.0825, img: 'img_3.jpg', titulo: 'Punto 3' },
-  { lat: 4.6115, lon: -74.0830, img: 'img_4.jpg', titulo: 'Punto 4' },
-  { lat: 4.6120, lon: -74.0835, img: 'img_5.jpg', titulo: 'Punto 5' },
-  { lat: 4.6125, lon: -74.0840, img: 'img_6.jpg', titulo: 'Punto 6' },
-  { lat: 4.6130, lon: -74.0845, img: 'img_7.jpg', titulo: 'Punto 7' },
-  { lat: 4.6135, lon: -74.0850, img: 'img_8.jpg', titulo: 'Punto 8' },
-  { lat: 4.6140, lon: -74.0855, img: 'img_9.jpg', titulo: 'Punto 9' },
-  { lat: 4.6145, lon: -74.0860, img: 'img_10.jpg', titulo: 'Punto 10' },
+// Coordenadas de las imágenes
+const coordenadas = [
+  { nombre: "img_1.jpg", lat: 4.627858333, lon: -74.06611111 },
+  { nombre: "img_2.jpg", lat: 4.627502778, lon: -74.06567778 },
+  { nombre: "img_3.jpg", lat: 4.62665, lon: -74.06578056 },
+  { nombre: "img_4.jpg", lat: 4.6266, lon: -74.06643611 },
+  { nombre: "img_5.jpg", lat: 4.626988889, lon: -74.06658056 },
+  { nombre: "img_6.jpg", lat: 4.627344444, lon: -74.06717222 },
+  { nombre: "img_7.jpg", lat: 4.628311111, lon: -74.06699167 },
+  { nombre: "img_8.jpg", lat: 4.628930556, lon: -74.06673056 },
+  { nombre: "img_9.jpg", lat: 4.6288, lon: -74.06593056 },
+  { nombre: "img_10.jpg", lat: 4.628591667, lon: -74.06591111 }
 ];
 
-// Añadir marcadores con popups de imágenes
-puntosDeInteres.forEach(poi => {
-  L.marker([poi.lat, poi.lon])
+// Añadir marcadores con las imágenes (sin cambiar ícono)
+coordenadas.forEach(coord => {
+  L.marker([coord.lat, coord.lon], { icon: fotoIcon })
     .addTo(map)
-    .bindPopup(`
-      <b>${poi.titulo}</b><br>
-      <img src="imagenes/${poi.img}" alt="${poi.titulo}" style="width:200px;max-width:90vw;border-radius:6px;" />
-    `);
+    .bindPopup(`<img src="${coord.nombre}" alt="${coord.nombre}" style="width:100px;">`);
 });
