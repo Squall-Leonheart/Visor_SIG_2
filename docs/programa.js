@@ -13,7 +13,26 @@ L.marker([4.60971, -74.08175])
   .bindPopup("<b>Plaza de Bolívar</b><br>Punto de referencia.")
   .openPopup();
 
-// Cargar el archivo GPX y dibujar la ruta
+// Definir iconos personalizados para GPX (usando iconos Leaflet predeterminados)
+const startIcon = L.icon({
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
+const endIcon = L.icon({
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-red.png', // Icono rojo para final
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
+// Cargar el archivo GPX y dibujar la ruta con iconos personalizados
 fetch('ruta.gpx')
   .then(response => {
     if (!response.ok) throw new Error('No se pudo cargar el archivo GPX: ' + response.status);
@@ -26,9 +45,9 @@ fetch('ruta.gpx')
       weight: 6,
       opacity: 0.9,
       markerOptions: {
-        startIcon: 'fa-play',
-        endIcon: 'fa-stop',
-        shadow: false
+        startIcon: startIcon,
+        endIcon: endIcon,
+        shadow: true
       }
     }).addTo(map);
 
@@ -49,7 +68,7 @@ fetch('ruta.gpx')
     alert('No se pudo cargar la ruta GPX. Verifica que el archivo "ruta.gpx" esté en la misma carpeta.');
   });
 
-// Puntos de interés con imágenes
+// Puntos de interés con imágenes: img_1.jpg a img_10.jpg
 const puntosDeInteres = [
   { lat: 4.6101, lon: -74.0818, img: 'img_1.jpg', titulo: 'Punto 1' },
   { lat: 4.6105, lon: -74.0820, img: 'img_2.jpg', titulo: 'Punto 2' },
